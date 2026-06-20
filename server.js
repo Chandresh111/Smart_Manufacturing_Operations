@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 
-// Set to 5001 to match your Kubernetes deployment.yaml
-const PORT = process.env.PORT || 5001;
+// Set to 5000 to match your Kubernetes deployment.yaml
+const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
