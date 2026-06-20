@@ -4,21 +4,22 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                // This tells Jenkins to pull the code from GitHub
+                // Pulls the latest code from GitHub
                 checkout scm
             }
         }
         
-        stage('Build Image') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Simulating Docker Build...'
-                // We will add the actual "docker build" command here next
+                echo 'Building Smart Factory Docker Image...'
+                // This runs the actual Docker build command on the Jenkins server
+                sh 'docker build -t smart-factory-app:latest .'
             }
         }
         
-        stage('Run Tests') {
+        stage('Simulate Deployment') {
             steps {
-                echo 'Simulating automated testing...'
+                echo 'Image built successfully! Ready for deployment.'
             }
         }
     }
