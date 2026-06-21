@@ -18,17 +18,36 @@ app.get('/', (req, res) => {
     });
 });
 
-// Mock endpoint representing factory production line sensors
+
+// Dynamic Mock endpoint representing factory production line sensors
 app.get('/api/v1/sensors', (req, res) => {
+    // 1. Dynamic Inputs: Accept query parameters from the URL or use defaults
+    const factoryId = req.query.factory_id || "FAC_MUM_30";
+    const productionLine = req.query.line || "Line_4_Assembly";
+
+    // 2. Generate the metrics
+    const temp = (Math.random() * (90 - 60) + 60); // Generates between 60°C and 90°C
+    const vib = (Math.random() * (2.0 - 0.1) + 0.1); // Generates between 0.1 and 2.0 amplitude
+
+    // 3. Dynamic Logic: Determine machine health based on the generated metrics
+    let currentStatus = "OPERATIONAL";
+
+    if (temp > 85 || vib > 1.6) {
+        currentStatus = "CRITICAL_OUTAGE";
+    } else if (temp > 80 || vib > 1.2) {
+        currentStatus = "MAINTENANCE_WARNING";
+    }
+
+    // 4. Send the dynamic response
     res.json({
         status: "success",
         timestamp: new Date().toISOString(),
-        factory_id: "FAC_MUM_30",
-        production_line: "Line_4_Assembly",
+        factory_id: factoryId,
+        production_line: productionLine,
         metrics: {
-            temperature_celsius: (Math.random() * (85 - 65) + 65).toFixed(2),
-            vibration_amplitude: (Math.random() * (1.5 - 0.2) + 0.2).toFixed(2),
-            machine_status: "OPERATIONAL"
+            temperature_celsius: temp.toFixed(2),
+            vibration_amplitude: vib.toFixed(2),
+            machine_status: currentStatus
         }
     });
 });
